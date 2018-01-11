@@ -11,8 +11,7 @@ WORKDIR /
 
 RUN rm -rf /go/src
 
-ENV BIND_ADDR 0.0.0.0:8000
-ENV TOR_PROXY tor-proxy:9150
+ENV ADDR 0.0.0.0:8000
 
 RUN groupadd -r rkn-bypasser
 RUN useradd -r -g rkn-bypasser rkn-bypasser
