@@ -24,7 +24,7 @@ func main() {
 
 	var addr = os.Getenv("ADDR")
 	if addr == "" {
-		log.Fatalln("[ERR] ADDR environment variable is not set")
+		addr = "127.0.1.1:8000"
 	}
 
 	initBlockedIPs()
