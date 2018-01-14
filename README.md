@@ -1,7 +1,9 @@
 # rkn-bypasser
+
 This is [roskomnadzor's](https://eng.rkn.gov.ru/) blocker bypasser.
 
 # How it works
+
 It loads blocked IPs from [roskomsvoboda](http://reestr.rublacklist.net/api/ips) and run local [SOCK5 proxy](https://github.com/armon/go-socks5) with special dialer. This dialer checks requested IP if it blocked. If IP blocked it uses [tapdance](https://github.com/sergeyfrolov/gotapdance) dialer. If not it uses default net dialer. Here's how evil roskomnadzor blocking machine is bypassed.
 
 # How to use it
@@ -62,9 +64,9 @@ $ rkn-baypasser -addr 127.0.1.1:8000 -tor 127.0.1.1:9150
 
 # Docker commands list
 
-Root and `tor-proxy` have `gnu-make` based docker control commands:
+Root and `tor-proxy` have `make` based docker control commands:
 
-* `install`
+* `install` _*default_
 * `build`
 * `start`
 * `stop`
@@ -76,7 +78,9 @@ Inspect makefiles to be sure what each command doing.
 
 ## Does it work on Windows?
 
-Sure. All this setups possible to do on Windows. You can write me if you need any help. 
+Sure. All this setups possible to do on Windows. You can write me if you need any help.
+
+There is also [Windows installer](https://github.com/Ze2QvoQxxKeu/rkn-bypasser-setup/releases) exists. It will install `rkn-bypasser` as windows service.
 
 # Contacts
 
