@@ -1,52 +1,102 @@
 package main
 
 import (
-	"flag"
-	"log"
+	"fmt"
 	"os"
-	"time"
 
-	"github.com/someanon/rkn-bypasser/proxy"
+	"gopkg.in/urfave/cli.v1"
 )
 
-type logWriter struct {
-	file *os.File
-}
-
-func (w logWriter) Write(bytes []byte) (int, error) {
-	return w.file.WriteString(time.Now().Format("2006-01-02 15:04:05.999999 ") + string(bytes))
-
-}
-
 func main() {
-	log.SetFlags(0)
-	log.SetOutput(logWriter{file: os.Stdout})
+	app := cli.NewApp()
 
-	var (
-		addr    string
-		torAddr string
-		withTor bool
-	)
+	app.Usage = "RNK bypasser proxy server"
+	app.Version = "0.04"
+	app.Author = "Vadim Chernov"
+	app.Email = "dimuls@yandex.ru"
 
-	flag.StringVar(&addr, "addr", os.Getenv("ADDR"), "bind address")
-	flag.StringVar(&torAddr, "tor", os.Getenv("TOR"), "TOR proxy server address")
-	flag.BoolVar(&withTor, "with-tor", false, "use TOR proxy reserve with default address")
-
-	flag.Parse()
-
-	if addr == "" {
-		log.Fatal("[ERR] Set ADDR environment variable or -addr flag")
+	app.Commands = []cli.Command{
+		{
+			Name:  "run",
+			Usage: "run proxy server",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:   "addr",
+					Usage:  "bind address",
+					EnvVar: "ADDR",
+				},
+				cli.StringFlag{
+					Name:   "tor",
+					Usage:  "reserve tor proxy server address",
+					EnvVar: "TOR",
+				},
+				cli.BoolFlag{
+					Name:  "with-tor",
+					Usage: "use default reserve tor proxy server address",
+				},
+			},
+			Action: run,
+		},
+		{
+			Name:  "service",
+			Usage: "Windows service control",
+			Subcommands: []cli.Command{
+				{
+					Name:   "install",
+					Usage:  "install and run Windows service",
+					Action: installService,
+					Flags: []cli.Flag{
+						cli.StringFlag{
+							Name:   "addr",
+							Usage:  "bind address",
+							EnvVar: "ADDR",
+							Value:  "127.0.1.1:8000",
+						},
+						cli.StringFlag{
+							Name:   "tor",
+							Usage:  "reserve tor proxy server address",
+							EnvVar: "TOR",
+						},
+					},
+				},
+				{
+					Name:   "uninstall",
+					Usage:  "uninstall Windows service",
+					Action: uninstallService,
+				},
+				{
+					Name:   "start",
+					Usage:  "start stopped service Windows",
+					Action: startService,
+				},
+				{
+					Name:   "run",
+					Usage:  "intended to be used by service manager",
+					Action: runService,
+					Flags: []cli.Flag{
+						cli.StringFlag{
+							Name:   "addr",
+							Usage:  "bind address",
+							EnvVar: "ADDR",
+						},
+						cli.StringFlag{
+							Name:   "tor",
+							Usage:  "reserve tor proxy server address",
+							EnvVar: "TOR",
+						},
+					},
+				},
+				{
+					Name:   "stop",
+					Usage:  "stop service immediately",
+					Action: stopService,
+				},
+			},
+		},
 	}
 
-	if torAddr == "" && withTor {
-		torAddr = "tor-proxy:9150"
+	if err := app.Run(os.Args); err != nil {
+		fmt.Fprintln(os.Stderr, err.Error())
+		os.Exit(1)
 	}
-
-	torStr := "without tor"
-	if torAddr != "" {
-		torStr = "with tor " + torAddr
-	}
-	log.Printf("Starting proxy with addr %s and %s\n", addr, torStr)
-
-	proxy.Run(addr, torAddr)
 }
