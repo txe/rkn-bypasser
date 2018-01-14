@@ -77,3 +77,11 @@ Inspect makefiles to be sure what each command doing.
 ## Does it work on Windows?
 
 Sure. All this setups possible to do on Windows. You can write me if you need any help. 
+
+# Contacts
+
+Feel free to contact me:
+
+* Email: dimuls@yandex.ru
+* Telegram: @dimuls
+* Skype: dimuls
