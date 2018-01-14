@@ -1,40 +1,52 @@
 package main
 
 import (
-	"context"
+	"flag"
 	"log"
-	"net"
 	"os"
-	"strings"
+	"time"
 
-	"github.com/armon/go-socks5"
-	"github.com/someanon/gotapdance/tapdance"
+	"github.com/someanon/rkn-bypasser/proxy"
 )
 
-func dial(ctx context.Context, network, addr string) (net.Conn, error) {
-	ip := strings.Split(addr, ":")[0]
-	if blockedIPs.Has(ip) {
-		return tapdance.Dial(network, addr)
-	}
-	return net.Dial(network, addr)
+type logWriter struct {
+	file *os.File
+}
+
+func (w logWriter) Write(bytes []byte) (int, error) {
+	return w.file.WriteString(time.Now().Format("2006-01-02 15:04:05.999999 ") + string(bytes))
+
 }
 
 func main() {
-	initLog()
+	log.SetFlags(0)
+	log.SetOutput(logWriter{file: os.Stdout})
 
-	var addr = os.Getenv("ADDR")
+	var (
+		addr    string
+		torAddr string
+		withTor bool
+	)
+
+	flag.StringVar(&addr, "addr", os.Getenv("ADDR"), "bind address")
+	flag.StringVar(&torAddr, "tor", os.Getenv("TOR"), "TOR proxy server address")
+	flag.BoolVar(&withTor, "with-tor", false, "use TOR proxy reserve with default address")
+
+	flag.Parse()
+
 	if addr == "" {
-		addr = "127.0.1.1:8000"
+		log.Fatal("[ERR] Set ADDR environment variable or -addr flag")
 	}
 
-	initBlockedIPs()
-
-	server, err := socks5.New(&socks5.Config{Dial: dial})
-	if err != nil {
-		log.Fatalln("[ERR] Fail to create SOCK5 proxy server: " + err.Error())
+	if torAddr == "" && withTor {
+		torAddr = "tor-proxy:9150"
 	}
 
-	if err := server.ListenAndServe("tcp", addr); err != nil {
-		log.Fatalln("[ERR] Fail to start SOCK5 proxy server: " + err.Error())
+	torStr := "without tor"
+	if torAddr != "" {
+		torStr = "with tor " + torAddr
 	}
+	log.Printf("Starting proxy with addr %s and %s\n", addr, torStr)
+
+	proxy.Run(addr, torAddr)
 }

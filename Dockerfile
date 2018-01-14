@@ -7,17 +7,20 @@ COPY . .
 RUN go-wrapper download
 RUN go-wrapper install
 
-WORKDIR /
-
+RUN cp -R ./assets /
 RUN rm -rf /go/src
 
-ENV ADDR 0.0.0.0:8000
+WORKDIR /assets
 
 RUN groupadd -r rkn-bypasser
 RUN useradd -r -g rkn-bypasser rkn-bypasser
 
-USER rkn-bypasser
+RUN chown -R rkn-bypasser:rkn-bypasser ./
+RUN chmod u+rw ./
 
 EXPOSE 8000
+STOPSIGNAL 2
 
-ENTRYPOINT /go/bin/rkn-bypasser
+USER rkn-bypasser
+ENV ADDR 0.0.0.0:8000
+ENTRYPOINT ["rkn-bypasser"]

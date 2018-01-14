@@ -1,5 +1,4 @@
-name = rkn-bypasser
-args =
+name = tor-proxy
 
 install: build start
 
@@ -7,7 +6,7 @@ build:
 	docker build -t $(name) .
 
 start:
-	docker run -d --restart=unless-stopped -p 127.0.1.1:8000:8000 -e TOR --name $(name) $(name) $(args)
+	docker run -d --restart=unless-stopped --name $(name) $(name)
 
 stop:
 	docker rm -f $(name)
