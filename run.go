@@ -19,10 +19,6 @@ func run(c *cli.Context) error {
 	addr := c.String("addr")
 	torAddr := c.String("tor")
 
-	if torAddr == "" && c.Bool("with-tor") {
-		torAddr = "tor-proxy:9150"
-	}
-
 	torStr := "without tor"
 	if torAddr != "" {
 		torStr = "with tor " + torAddr
