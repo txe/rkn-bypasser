@@ -5,7 +5,7 @@ import (
 
 	"github.com/getlantern/errors"
 	"github.com/someanon/rkn-bypasser/proxy"
-	"gopkg.in/urfave/cli.v1"
+	"github.com/urfave/cli"
 )
 
 func run(c *cli.Context) error {
