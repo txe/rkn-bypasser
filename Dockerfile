@@ -1,28 +1,23 @@
-FROM golang:1.10
-MAINTAINER Vadim Chernov <dimuls@yandex.ru>
+FROM golang:1.11 AS builder
 
 WORKDIR /go/src/github.com/someanon/rkn-bypasser
 COPY . .
 
-RUN go get -d -v ./...
-RUN go install -v ./...
+RUN go get -d -v ./... && \
+CGO_ENABLED=0 go install -v ./...
 
-RUN cp -R ./assets /
-RUN rm -rf /go/src
 
-WORKDIR /assets
 
-RUN groupadd -r rkn-bypasser
-RUN useradd -r -g rkn-bypasser rkn-bypasser
+FROM alpine:3.8
 
-RUN chown -R rkn-bypasser:rkn-bypasser ./
-RUN chmod u+rw ./
+ENV BIND_ADDR=0.0.0.0:8000 TOR_ADDR=tor:9150
+
+WORKDIR /
+
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+
+COPY --from=builder /go/bin/rkn-bypasser /rkn-bypasser
 
 EXPOSE 8000
-STOPSIGNAL 2
 
-USER rkn-bypasser
-
-ENV ADDR 0.0.0.0:8000
-
-ENTRYPOINT /go/bin/rkn-bypasser run
+ENTRYPOINT ["/rkn-bypasser"]

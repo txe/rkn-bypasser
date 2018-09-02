@@ -3,15 +3,15 @@ package proxy
 import (
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/fatih/set"
+	"github.com/sirupsen/logrus"
 )
 
-var blockedIPs *set.Set
+var blockedIPs set.Interface
 
 func loadBlockedIPs() error {
 	t := time.Now()
@@ -35,7 +35,7 @@ func loadBlockedIPs() error {
 	}
 
 	if blockedIPs == nil {
-		blockedIPs = set.New()
+		blockedIPs = set.New(set.NonThreadSafe)
 	} else {
 		blockedIPs.Clear()
 	}
@@ -51,7 +51,9 @@ func loadBlockedIPs() error {
 		blockedIPs.Add(ip)
 	}
 
-	log.Printf("%d blocked IPs loaded in %s\n", blockedIPs.Size(), time.Now().Sub(t).String())
+	logrus.Infof("%d blocked IPs loaded in %s\n", blockedIPs.Size(),
+		time.Now().Sub(t).String())
+
 	return nil
 }
 
@@ -71,7 +73,7 @@ func loadPresavedBlockedIPs() error {
 	}
 
 	if blockedIPs == nil {
-		blockedIPs = set.New()
+		blockedIPs = set.New(set.NonThreadSafe)
 	} else {
 		blockedIPs.Clear()
 	}
@@ -80,22 +82,25 @@ func loadPresavedBlockedIPs() error {
 		blockedIPs.Add(ip)
 	}
 
-	log.Printf("%d presaved blocked IPs loaded in %s\n", blockedIPs.Size(), time.Now().Sub(t).String())
+	logrus.Infof("%d presaved blocked IPs loaded in %s", blockedIPs.Size(),
+		time.Now().Sub(t).String())
+
 	return nil
 }
 
 func initBlockedIPs() {
 	if err := loadBlockedIPs(); err != nil {
-		log.Println("[ERR] Fail to load blocked IPs: " + err.Error())
+		logrus.WithError(err).Error("Failed to load blocked IPs")
 		if err := loadPresavedBlockedIPs(); err != nil {
-			log.Fatalln("[ERR] Fail to load presaved blocked IPs: " + err.Error())
+			logrus.WithError(err).Error(
+				"Failed to load presaved blocked IPs")
 		}
 	}
 	go func() {
 		for {
 			time.Sleep(24 * time.Hour)
 			if err := loadBlockedIPs(); err != nil {
-				log.Println("[ERR] Fail to load blocked IPs: " + err.Error())
+				logrus.WithError(err).Error("Failed to load blocked IPs")
 			}
 		}
 	}()
