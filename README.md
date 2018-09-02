@@ -10,11 +10,12 @@ It loads blocked IPs from [roskomsvoboda](http://reestr.rublacklist.net/api/ips)
 
 ## Using docker
 
-You need [docker](https://www.docker.com/community-edition) and gnu-make util. Just open project root in terminal and enter:
+You need [docker](https://www.docker.com/community-edition). Just open project root in terminal and enter:
 ```
-$ make
+$ docker-composeup --build -d
 ``` 
-It will build docker and run it. You only need to configure your browser (and any other soft) to use SOCK5 proxy at `127.0.1.1:8000`.
+It will build docker and run it. You only need to configure your browser 
+(and any other soft) to use SOCK5 proxy at `127.0.0.1:8000`.
 
 ## Manually build
 
@@ -25,56 +26,8 @@ $ go install github.com/someanon/rkn-baypasser
 
 Now you can use it:
 ```
-$ rkn-baypasser -addr 127.0.1.1:8000
+$ rkn-baypasser -bind-addr 127.0.1.1:8000
 ```
-
-# TOR reserve
-
-For reliability you can use TOR proxy as reserve if main tapdance dialer fails. 
-
-## Using docker 
-
-Open `tor-proxy` folder and simply enter:
-
-```
-$ make
-```
-
-It will build and run TOR proxy server. Now you can use it in your main proxy server.
-
-Restart already installed main proxy server:
-
-```
-make restart args=-with-tor
-```
-
-Or install it with TOR right away:
-
-```
-make args=-with-tor
-```
-
-## Manually
-
-Just use `-tor` argument with address to your TOR proxy server:
-
-```
-$ rkn-baypasser -addr 127.0.1.1:8000 -tor 127.0.1.1:9150
-```
-
-# Docker commands list
-
-Root and `tor-proxy` have `make` based docker control commands:
-
-* `install` _*default_
-* `build`
-* `start`
-* `stop`
-* `rebuild`
-* `restart`
-* `log`
-
-Inspect makefiles to be sure what each command doing.  
 
 ## Does it work on Windows?
 
@@ -88,4 +41,3 @@ Feel free to contact me:
 
 * Email: dimuls@yandex.ru
 * Telegram: @dimuls
-* Skype: dimuls
