@@ -51,7 +51,7 @@ func loadBlockedIPs() error {
 		blockedIPs.Add(ip)
 	}
 
-	logrus.Infof("%d blocked IPs loaded in %s\n", blockedIPs.Size(),
+	logrus.Infof("%d blocked IPs loaded in %s", blockedIPs.Size(),
 		time.Now().Sub(t).String())
 
 	return nil
