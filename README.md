@@ -4,7 +4,7 @@ This is [roskomnadzor's](https://eng.rkn.gov.ru/) blocker bypasser.
 
 # How it works
 
-It loads blocked IPs from [roskomsvoboda](http://reestr.rublacklist.net/api/ips) and run local [SOCK5 proxy](https://github.com/armon/go-socks5) with special dialer. This dialer checks requested IP if it blocked. If IP blocked it uses dialer through the  [TOR](https://www.torproject.org/). If not it uses default net dialer. Here's how evil roskomnadzor blocking machine is bypassed.
+It loads blocked IPs from [roskomsvoboda](http://reestr.rublacklist.net/api/ips) and run local [SOCK5 proxy](https://github.com/armon/go-socks5) with special dialer. This dialer checks requested IP if it blocked. If IP blocked it uses dialer through the [TOR](https://www.torproject.org/). If not it uses default net dialer. Here's how evil roskomnadzor blocking machine is bypassed.
 
 # How to use it
 
