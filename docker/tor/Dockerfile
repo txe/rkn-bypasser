@@ -17,7 +17,7 @@ echo 'DataDirectory /var/lib/tor' >> /etc/torrc
 
 
 
-FROM alpine:3   .8
+FROM alpine:3.8
 
 RUN apk update && \
     apk add libevent libssl1.0 musl openssl openssh
