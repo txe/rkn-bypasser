@@ -26,7 +26,7 @@ $ go install github.com/someanon/rkn-baypasser
 
 Now you can use it:
 ```
-$ rkn-baypasser -bind-addr 127.0.1.1:8000
+$ rkn-baypasser --bind-addr 127.0.0.1:8000
 ```
 
 ## Does it work on Windows?
