@@ -32,9 +32,7 @@ $ rkn-baypasser --bind-addr 127.0.0.1:8000
 ## Does it work on Windows?
 
 Sure. All this setups possible to do on Windows. You can write me if you need any help.
-
-There is also [Windows installer](https://github.com/Ze2QvoQxxKeu/rkn-bypasser-setup/releases) exists. It will install `rkn-bypasser` as windows service.
-
+ 
 # Contacts
 
 Feel free to contact me:
