@@ -12,7 +12,7 @@ It loads blocked IPs from [roskomsvoboda](http://reestr.rublacklist.net/api/ips)
 
 You need [docker](https://www.docker.com/community-edition). Just open project root in terminal and enter:
 ```
-$ docker-composeup --build -d
+$ docker-compose up --build -d
 ``` 
 It will build docker and run it. You only need to configure your browser 
 (and any other soft) to use SOCK5 proxy at `127.0.0.1:8000`.
