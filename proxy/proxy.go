@@ -44,11 +44,11 @@ func Run(bindAddr string, torAddr string) {
 
 	if err != nil {
 		logrus.WithError(err).Fatal(
-			"Failed to create SOCK5 proxy server")
+			"Failed to create SOCKS5 proxy server")
 	}
 
 	if err := server.ListenAndServe("tcp", bindAddr); err != nil {
 		logrus.WithError(err).Fatal(
-			"Failed to start SOCK5 proxy server")
+			"Failed to start SOCKS5 proxy server")
 	}
 }

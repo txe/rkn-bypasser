@@ -4,7 +4,7 @@ This is [roskomnadzor's](https://eng.rkn.gov.ru/) blocker bypasser.
 
 # How it works
 
-It loads blocked IPs from [roskomsvoboda](http://reestr.rublacklist.net/api/ips) and run local [SOCK5 proxy](https://github.com/armon/go-socks5) with special dialer. This dialer checks requested IP if it blocked. If IP blocked it uses dialer through the [TOR](https://www.torproject.org/). If not it uses default net dialer. Here's how evil roskomnadzor blocking machine is bypassed.
+It loads blocked IPs from [roskomsvoboda](http://reestr.rublacklist.net/api/ips) and run local [SOCKS5 proxy](https://github.com/armon/go-socks5) with special dialer. This dialer checks requested IP if it blocked. If IP blocked it uses dialer through the [TOR](https://www.torproject.org/). If not it uses default net dialer. Here's how evil roskomnadzor blocking machine is bypassed.
 
 # How to use it
 
@@ -15,7 +15,7 @@ You need [docker](https://www.docker.com/community-edition). Just open project r
 $ docker-compose up --build -d
 ``` 
 It will build docker and run it. You only need to configure your browser 
-(and any other soft) to use SOCK5 proxy at `127.0.0.1:8000`.
+(and any other soft) to use SOCKS5 proxy at `127.0.0.1:8000`.
 
 ## Manually build
 
@@ -26,7 +26,7 @@ $ go install github.com/someanon/rkn-baypasser
 
 Now you can use it:
 ```
-$ rkn-baypasser --bind-addr 127.0.0.1:8000
+$ rkn-bypasser --bind-addr 127.0.0.1:8000
 ```
 
 ## Does it work on Windows?
