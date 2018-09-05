@@ -14,7 +14,7 @@ func main() {
 	app := cli.NewApp()
 
 	app.Usage = "RNK bypasser proxy server"
-	app.Version = "1.0"
+	app.Version = "1.1"
 	app.Author = "Vadim Chernov"
 	app.Email = "dimuls@yandex.ru"
 
@@ -29,6 +29,11 @@ func main() {
 			Usage:  "tor proxy server address",
 			EnvVar: "TOR_ADDR",
 			Value:  "127.0.0.1:9050",
+		},
+		cli.BoolFlag{
+			Name:   "with-additional-ips",
+			Usage:  "use additional blocked IPs file",
+			EnvVar: "WITH_ADDITIONAL_IPS",
 		},
 	}
 
@@ -48,13 +53,15 @@ func run(c *cli.Context) error {
 
 	bindAddr := c.String("bind-addr")
 	torAddr := c.String("tor-addr")
+	withAdditionalIPs := c.Bool("with-additional-ips")
 
 	logrus.WithFields(logrus.Fields{
-		"bindAddr": bindAddr,
-		"torAddr":  torAddr,
-	}).Printf("Running")
+		"bindAddr":          bindAddr,
+		"torAddr":           torAddr,
+		"withAdditionalIPs": withAdditionalIPs,
+	}).Printf("Running proxy")
 
-	proxy.Run(bindAddr, torAddr)
+	proxy.Run(bindAddr, torAddr, withAdditionalIPs)
 
 	return nil
 }

@@ -34,9 +34,9 @@ func (d dialer) dial(ctx context.Context, network, addr string) (net.Conn, error
 	return net.Dial(network, addr)
 }
 
-func Run(bindAddr string, torAddr string) {
+func Run(bindAddr string, torAddr string, withAdditionalIPs bool) {
 
-	initBlockedIPs()
+	initBlockedIPs(withAdditionalIPs)
 
 	d := dialer{torAddr: torAddr}
 
