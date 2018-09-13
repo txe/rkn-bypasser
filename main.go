@@ -6,7 +6,7 @@ import (
 
 	"github.com/getlantern/errors"
 	"github.com/sirupsen/logrus"
-	"github.com/someanon/rkn-bypasser/proxy"
+	"github.com/dimuls/rkn-bypasser/proxy"
 	"github.com/urfave/cli"
 )
 

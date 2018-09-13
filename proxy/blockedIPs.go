@@ -8,10 +8,9 @@ import (
 	"os"
 	"time"
 
-	"gopkg.in/yaml.v2"
-
 	"github.com/fatih/set"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v2"
 )
 
 var blockedIPs set.Interface
@@ -63,7 +62,7 @@ func loadBlockedIPs() error {
 func loadPresavedBlockedIPs() error {
 	t := time.Now()
 
-	f, err := os.Open("blocked-ips")
+	f, err := os.Open("blocked-ips.json")
 	if err != nil {
 		return err
 	}
@@ -94,7 +93,7 @@ func loadPresavedBlockedIPs() error {
 func loadAdditionalBlockedIPs() error {
 	t := time.Now()
 
-	ipsYAML, err := ioutil.ReadFile("./additional-ips")
+	ipsYAML, err := ioutil.ReadFile("./additional-ips.yml")
 	if err != nil {
 		return errors.New("failed to read additional-ips file: " + err.Error())
 	}

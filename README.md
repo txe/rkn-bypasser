@@ -21,7 +21,7 @@ It will build docker and run it. You only need to configure your browser
 
 You can build it by your own using [go](https://golang.org/dl/):
 ```
-$ go install github.com/someanon/rkn-bypasser
+$ go install github.com/dimuls/rkn-bypasser
 ```
 
 Now you can use it:
