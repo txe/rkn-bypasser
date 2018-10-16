@@ -38,7 +38,7 @@ func main() {
 		cli.BoolFlag{
 			Name:   "with-tapdance",
 			Usage:  "try tapdance before tor",
-			EnvVar: "WITH_ADDITIONAL_IPS",
+			EnvVar: "WITH_TAPDANCE",
 		},
 	}
 
