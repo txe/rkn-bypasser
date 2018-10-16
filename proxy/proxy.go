@@ -6,12 +6,14 @@ import (
 	"strings"
 
 	"github.com/armon/go-socks5"
+	"github.com/dimuls/gotapdance/tapdance"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/proxy"
 )
 
 type dialer struct {
-	torAddr string
+	torAddr      string
+	withTapdance bool
 }
 
 func (d dialer) torDial(ctx context.Context, network, addr string) (net.Conn, error) {
@@ -29,16 +31,24 @@ func (d dialer) torDial(ctx context.Context, network, addr string) (net.Conn, er
 func (d dialer) dial(ctx context.Context, network, addr string) (net.Conn, error) {
 	ip := strings.Split(addr, ":")[0]
 	if blockedIPs.Has(ip) {
-		return d.torDial(ctx, network, addr)
+		if d.withTapdance {
+			conn, err := tapdance.Dial(network, addr)
+			if err != nil {
+				return d.torDial(ctx, network, addr)
+			}
+			return conn, err
+		} else {
+			return d.torDial(ctx, network, addr)
+		}
 	}
 	return net.Dial(network, addr)
 }
 
-func Run(bindAddr string, torAddr string, withAdditionalIPs bool) {
+func Run(bindAddr string, torAddr string, withAdditionalIPs bool, withTapdance bool) {
 
 	initBlockedIPs(withAdditionalIPs)
 
-	d := dialer{torAddr: torAddr}
+	d := dialer{torAddr: torAddr, withTapdance: withTapdance}
 
 	server, err := socks5.New(&socks5.Config{Dial: d.dial})
 

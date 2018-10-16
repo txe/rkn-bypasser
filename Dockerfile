@@ -16,9 +16,10 @@ WORKDIR /
 
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
-COPY --from=builder /go/bin/rkn-bypasser /rkn-bypasser
-COPY additional-ips.yml /additional-ips.yml
+COPY --from=builder /go/bin/rkn-bypasser /
+COPY --from=builder /go/src/github.com/dimuls/gotapdance/assets /
+COPY additional-ips.yml /
 
 EXPOSE 8000
 
-ENTRYPOINT ["/rkn-bypasser", "--with-additional-ips"]
+ENTRYPOINT ["/rkn-bypasser", "--with-additional-ips", "--with-tapdance"]

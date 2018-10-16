@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/dimuls/rkn-bypasser/proxy"
 	"github.com/getlantern/errors"
 	"github.com/sirupsen/logrus"
-	"github.com/dimuls/rkn-bypasser/proxy"
 	"github.com/urfave/cli"
 )
 
@@ -35,6 +35,11 @@ func main() {
 			Usage:  "use additional blocked IPs file",
 			EnvVar: "WITH_ADDITIONAL_IPS",
 		},
+		cli.BoolFlag{
+			Name:   "with-tapdance",
+			Usage:  "try tapdance before tor",
+			EnvVar: "WITH_ADDITIONAL_IPS",
+		},
 	}
 
 	app.Action = run
@@ -54,14 +59,16 @@ func run(c *cli.Context) error {
 	bindAddr := c.String("bind-addr")
 	torAddr := c.String("tor-addr")
 	withAdditionalIPs := c.Bool("with-additional-ips")
+	withTapdance := c.Bool("with-tapdance")
 
 	logrus.WithFields(logrus.Fields{
 		"bindAddr":          bindAddr,
 		"torAddr":           torAddr,
 		"withAdditionalIPs": withAdditionalIPs,
+		"withTapdance":      withAdditionalIPs,
 	}).Printf("Running proxy")
 
-	proxy.Run(bindAddr, torAddr, withAdditionalIPs)
+	proxy.Run(bindAddr, torAddr, withAdditionalIPs, withTapdance)
 
 	return nil
 }
