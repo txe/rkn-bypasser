@@ -1,6 +1,6 @@
 FROM golang:1.11 AS builder
 
-WORKDIR /go/src/github.com/dimuls/rkn-bypasser
+WORKDIR /go/src/github.com/txe/rkn-bypasser
 COPY . .
 
 RUN go get -d -v ./... && \
@@ -17,7 +17,7 @@ WORKDIR /
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
 COPY --from=builder /go/bin/rkn-bypasser /
-COPY --from=builder /go/src/github.com/dimuls/gotapdance/assets /
+COPY --from=builder /go/src/github.com/sergeyfrolov/gotapdance/assets /
 COPY additional-ips.yml /
 
 EXPOSE 8000

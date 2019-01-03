@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/armon/go-socks5"
-	"github.com/dimuls/gotapdance/tapdance"
+	"github.com/sergeyfrolov/gotapdance/tapdance"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/proxy"
 )

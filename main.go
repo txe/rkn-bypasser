@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dimuls/rkn-bypasser/proxy"
+	"github.com/txe/rkn-bypasser/proxy"
 	"github.com/getlantern/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
